@@ -410,3 +410,24 @@ private:
 };
 
 ```
+
+
+[206. 反转链表](https://leetcode-cn.com/problems/reverse-linked-list/)
+- 双指针
+- 递归
+```C++
+class Solution {
+public:
+	ListNode* reverse(ListNode* pre, ListNode* cur) {
+		if (!cur) return pre;
+		ListNode* temp = cur->next;
+		cur->next = pre;
+		return reverse(cur, temp);
+	}
+
+	ListNode* reverseList(ListNode* head) {
+		return reverse(nullptr, head);
+	}
+
+};
+```
