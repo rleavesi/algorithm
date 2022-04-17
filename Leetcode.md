@@ -509,3 +509,26 @@ public:
 	}
  };
 ```
+[242. 有效的字母异位词](https://leetcode-cn.com/problems/valid-anagram/)
+```C++
+#include <iostream>
+using namespace std;
+
+class Solution {
+public:
+	bool isAnagram(string s, string t) {
+		int len[26] = { 0 };
+		for (int i = 0; i < s.size(); i++)
+			len[s[i] - 'a'] ++;
+		for (int i = 0; i < t.size(); i++) {
+			len[t[i] - 'a'] --;
+			if (len[t[i] - 'a'] < 0) return false;
+		}
+		for (int i = 0; i < 26; i++) {
+			if (len[i] != 0) return false;
+		}
+		return true;
+	}
+};
+```
+
