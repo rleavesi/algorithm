@@ -431,3 +431,81 @@ public:
 
 };
 ```
+
+[24. 两两交换链表中的节点](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)
+```C++
+class Solution {
+public:
+	ListNode* swapPairs(ListNode* head) {
+		ListNode* visual = new ListNode(0,head);
+		ListNode* cur = visual;
+
+		while (cur->next != nullptr && cur->next->next != nullptr) {
+			ListNode* temp1 = cur->next;
+			ListNode* temp2 = cur->next->next->next;
+			
+			cur->next = temp1->next;
+			cur->next->next = temp1;
+			cur->next->next->next = temp2;
+
+			cur = cur->next->next;
+		}
+		return visual->next;
+	}
+};
+```
+
+[面试题 02.07. 链表相交](https://leetcode-cn.com/problems/intersection-of-two-linked-lists-lcci/)
+```C++ 
+#include <iostream>
+#include <stdint.h>
+#include <math.h>
+using namespace std;
+
+class Solution {
+public:
+	int get_len(ListNode* head) {
+		if (!head) return 0;
+		int len = 1;
+		while (head->next) {
+			len++;
+			head = head->next;
+		}
+		return len;
+	}
+	ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+		int lenA = get_len(headA);
+		int lenB = get_len(headB);
+		if (lenA == 0 || lenB == 0)	return nullptr;
+		
+		ListNode* s;
+		ListNode* l;
+		
+		if (lenA > lenB) {
+			s = headB;
+			l = headA;
+		}
+		else {
+			s = headA;
+			l = headB;
+		}
+		for (int i = 0; i < abs(lenA - lenB); i++) 
+			l = l->next;
+
+		while (s != l) {
+			s = s->next;
+			l = l->next;
+			if (!s || !l) return nullptr;
+		}
+		return s;
+	}
+
+	void out(ListNode* head) {
+		while (head) {
+			cout << head->val << "->";
+			head = head->next;
+		}
+		cout << endl;
+	}
+ };
+```
