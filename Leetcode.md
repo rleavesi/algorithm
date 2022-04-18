@@ -532,3 +532,41 @@ public:
 };
 ```
 
+[144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
+```C++
+class Solution {
+public:
+	void reverse(TreeNode* root, vector<int> & res) {
+		if (root == nullptr) return;
+		res.push_back(root->val);
+		reverse(root->left, res);
+		reverse(root->right, res);
+	}
+
+vector<int> preorderTraversal(TreeNode* root) {
+		vector<int> res;
+		reverse(root, res);
+		return res;
+	}
+};
+```
+
+
+[145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/submissions/)
+```C++
+class Solution {
+public:
+	void reverse(TreeNode* root, vector<int> &res) {
+		if (root == nullptr) return;
+		reverse(root->left, res);
+		reverse(root->right, res);
+		res.push_back(root->val);
+	}
+
+	vector<int> postorderTraversal(TreeNode* root) {
+		vector<int> res;
+		reverse(root, res);
+		return res;
+	}
+};
+```
