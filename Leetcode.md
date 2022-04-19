@@ -570,3 +570,175 @@ public:
 	}
 };
 ```
+
+[102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
+```C++
+#include "lc.hpp"
+struct TreeNode {
+     int val;
+     TreeNode *left;
+     TreeNode *right;
+     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	 TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+class Solution {
+public:
+	vector<vector<int>> levelOrder(TreeNode* root) {
+		queue<TreeNode*> que;
+		if (root != NULL) que.push(root);
+		vector<vector<int>> res;
+		while (!que.empty()) {
+			vector<int> vec;
+			int size = que.size();
+			for (int i = 0; i < size; i++) {
+				TreeNode* temp = que.front();
+				que.pop();
+				vec.push_back(temp->val);
+				if(temp->left) que.push(temp->left);
+				if(temp->right) que.push(temp->right);
+			}
+			res.push_back(vec);
+		}
+		return res;
+	}
+};
+```
+
+[103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
+```C++
+class Solution {
+public:
+	vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+		queue<TreeNode*> que;
+		if (root != NULL) que.push(root);
+		vector<vector<int>> res;
+		bool left = true;
+		while (!que.empty()) {
+			left = !left;
+			vector<int> vec;
+			int size = que.size();
+			for (int i = 0; i < size; i++) {
+				TreeNode* temp = que.front();
+				que.pop();
+				vec.push_back(temp->val);
+				if (temp->left) que.push(temp->left);
+				if (temp->right) que.push(temp->right);
+			}
+			if (left) reverse(vec.begin(), vec.end());
+			res.push_back(vec);
+		}
+		return res;
+	}
+};
+
+```
+
+[199. 二叉树的右视图](https://leetcode-cn.com/problems/binary-tree-right-side-view/)
+```C++
+class Solution {
+public:
+	vector<int> rightSideView(TreeNode* root) {
+		queue<TreeNode*> que;
+		if (root != NULL) que.push(root);
+		vector<int> res;
+		while (!que.empty()) {
+			vector<int> vec;
+			int size = que.size();
+			for (int i = 0; i < size; i++) {
+				TreeNode* temp = que.front();
+				que.pop();
+				vec.push_back(temp->val);
+				if (temp->left) que.push(temp->left);
+				if (temp->right) que.push(temp->right);
+
+			}
+			res.push_back(vec[vec.size() - 1]);
+		}
+		return res;
+	}
+};
+```
+
+[429. N 叉树的层序遍历](https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/)
+```C++
+class Solution {
+public:
+	vector<vector<int>> levelOrder(Node* root) {
+		queue<Node*> que;
+		if (root != NULL) que.push(root);
+		vector<vector<int>> res;
+		while (!que.empty()) {
+			vector<int> vec;
+			int size = que.size();
+			for (int i = 0; i < size; i++) {
+				Node* temp = que.front();
+				que.pop();
+				vec.push_back(temp->val);
+				for (auto i : temp->children) {
+					if (i) que.push(i);
+				}
+			}
+			res.push_back(vec);
+		}
+		return res;
+	}
+};
+```
+[515. 在每个树行中找最大值](https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/)
+```C++
+class Solution {
+public:
+	vector<int> largestValues(TreeNode* root) {
+		queue<TreeNode*> que;
+		if (root != NULL) que.push(root);
+		vector<int>  res;
+		while (!que.empty()) {
+			int size = que.size();
+			vector<int> vec;
+			for (int i = 0; i < size; i++) {
+				TreeNode*  temp = que.front();
+				que.pop();
+				vec.push_back(temp->val);
+				if (temp->left) que.push(temp->left);
+				if (temp->right) que.push(temp->right);
+			}
+			int max = vec[0];
+			for (auto i : vec) {
+				if (i > max)	max = i;
+			}
+			res.push_back(max);
+		}
+		return res;
+	}
+};
+
+```
+[116. 填充每个节点的下一个右侧节点指针](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/)
+```C++
+class Solution {
+public:
+	Node* connect(Node* root) {
+		queue<Node*> que;
+		if (root != NULL) que.push(root);
+		while (!que.empty()) {
+			int size = que.size();
+			Node* last;
+			for (int i = 0; i < size; i++) {
+                
+				Node*  temp = que.front();
+                if (i == size - 1)
+					temp->next = nullptr;
+				if (i != 0)
+					last->next = temp;
+				last = temp;
+				que.pop();
+				if (temp->left) que.push(temp->left);
+				if (temp->right) que.push(temp->right);
+			}
+		}
+	return root;
+	}
+};
+```
