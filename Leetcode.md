@@ -742,3 +742,105 @@ public:
 	}
 };
 ```
+
+
+[226. 翻转二叉树](https://leetcode-cn.com/problems/invert-binary-tree/)
+```C++
+#include "lc.hpp"
+
+struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+ 
+class Solution {
+public:
+	TreeNode* invertTree(TreeNode* root) {
+		queue<TreeNode*> que;
+		if (root != NULL) que.push(root);
+		while (!que.empty()) {
+			int size = que.size();
+			for (int i = 0; i < size; i++) {
+				TreeNode* temp = que.front();
+				que.pop();
+
+				TreeNode* cur = temp->left;
+				temp->left = temp->right;
+				temp->right = cur;
+
+				if (temp->left) que.push(temp->left);
+				if (temp->right) que.push(temp->right);
+			}
+		}
+		return root;
+	}
+};
+```
+
+[101. 对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
+```C++
+class Solution {
+public:
+	bool compare(TreeNode* left, TreeNode* right) {
+		if (left == nullptr && right != nullptr) return false;
+		if (right == nullptr && left != nullptr) return false;
+		if (right == nullptr && left == nullptr) return true;
+		if (left->val != right->val) return false;
+		if (!compare(left->left, right->right))	return false;
+		if (!compare(left->right, right->left))	return false;
+		return true;
+	}
+
+	bool isSymmetric(TreeNode* root) {
+		return compare(root->left,root->right);
+	}
+};
+```
+
+[104. 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
+```C++
+class Solution {
+public:
+	int maxDepth(TreeNode* root) {
+		if (root == nullptr) return 0;
+		return	1 + max(maxDepth(root->left), maxDepth(root->right));
+	}
+};
+```
+
+[111. 二叉树的最小深度](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/)
+```C++
+class Solution {
+public:
+	int minDepth(TreeNode* root) {
+		if (root == nullptr) return 0;
+		if (root->left == nullptr && root->right == nullptr) return 1;
+		if (root->left == nullptr && root->right != nullptr) return 1 + minDepth(root->right);
+		if (root->right == nullptr && root->left != nullptr) return 1 + minDepth(root->left);
+		return 1 + min(minDepth(root->left), minDepth(root->right));
+	}
+};
+```
+
+[222. 完全二叉树的节点个数](https://leetcode-cn.com/problems/count-complete-tree-nodes/) 
+```C++
+class Solution {
+public:
+	void order(TreeNode* root, vector<int>& res) {
+		if (root == nullptr)	return;
+		res.push_back(root->val);
+		order(root->left,res);
+		order(root->right, res);
+	}
+
+	int countNodes(TreeNode* root) {
+		vector<int> res;
+		order(root, res);
+		return res.size();
+	}
+};
+```
