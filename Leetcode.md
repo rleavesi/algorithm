@@ -844,3 +844,98 @@ public:
 	}
 };
 ```
+
+[110. 平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree/)
+```C++
+class Solution {
+public:
+	int getHeight(TreeNode* node) {
+		if (node == nullptr) {
+			return 0;
+		}
+		int leftHeight = getHeight(node->left);
+		if (leftHeight == -1)	return -1;
+		int rightHeight = getHeight(node->right);
+		if (rightHeight == -1)	return -1;	
+		return abs(leftHeight - rightHeight) > 1 ? -1 : 1 + max(leftHeight, rightHeight);
+	}
+	bool isBalanced(TreeNode* root) {
+		if (getHeight(root) == -1)	return false;
+		else return true;
+	}
+};
+```
+
+[257. 二叉树的所有路径](https://leetcode-cn.com/problems/binary-tree-paths/)
+```C++
+class Solution {
+public:
+	void traversal(TreeNode* cur, vector<string>& res, vector<int> &path) {
+		path.push_back(cur->val);
+		if (cur->left == NULL && cur->right == NULL) {
+			string sPath;
+			for (int i = 0; i < path.size() - 1; i++) {
+				sPath += to_string(path[i]);
+				sPath += "->";
+			}
+			sPath += to_string(path[path.size() - 1]);
+			res.push_back(sPath);
+			return;
+		}
+		if (cur->left) {
+			traversal(cur->left, res, path);
+			path.pop_back();	//回溯
+		}
+		if (cur->right) {
+			traversal(cur->right, res, path);
+			path.pop_back();	// 回溯
+		}
+	}
+
+	vector<string> binaryTreePaths(TreeNode* root) {
+		vector<string> res;
+		vector<int> path;
+		if (root == NULL)	return res;
+		traversal(root, res, path);
+		return res;
+	}
+};
+```
+
+[404. 左叶子之和](https://leetcode-cn.com/problems/sum-of-left-leaves/)
+```C++
+class Solution {
+public:
+	void cal(int& res, TreeNode* root) {
+		if (root == nullptr)	return;
+		
+		if (root->left != nullptr) {
+			if (root->left->left == nullptr && root->left->right == nullptr) {
+				res += root->left->val;
+			}
+			else cal(res, root->left);
+		}
+
+		cal(res, root->right);
+	}
+
+	int sumOfLeftLeaves(TreeNode* root) {
+		int res = 0;
+		cal(res, root);
+		return res;
+		
+	}
+};
+
+// 精简版
+class Solution {
+public:
+    int sumOfLeftLeaves(TreeNode* root) {
+        int res = 0;
+        if(root == nullptr) return 0;
+        if(root->left != nullptr && root->left->left == nullptr && root->left->right == nullptr)
+            res = root->left->val;
+        return res + sumOfLeftLeaves(root->left) + sumOfLeftLeaves(root->right);
+    }
+};
+```
