@@ -939,3 +939,109 @@ public:
     }
 };
 ```
+[513. 找树左下角的值](https://leetcode-cn.com/problems/find-bottom-left-tree-value/)
+```C++
+class Solution {
+public:
+	int maxLen = INT_MIN;
+	int maxval;
+	
+	void traversal(TreeNode* root,int leftlen) {
+		if (root->left == nullptr && root->right == nullptr) {
+			if (leftlen > maxLen) {
+				maxLen = leftlen;
+				maxval = root->val;
+			}
+		}
+		if (root->left) {
+			leftlen++;
+			traversal(root->left, leftlen);
+			leftlen--;
+		}
+
+		if (root->right) {
+			leftlen++;
+			traversal(root->right, leftlen);
+			leftlen--;
+		}
+		
+	}
+
+	int findBottomLeftValue(TreeNode* root) {
+		traversal(root, 0);
+		return maxval;
+	}
+};
+```
+
+[112. 路径总和](https://leetcode-cn.com/problems/path-sum/)
+```C++
+class Solution {
+public:
+	int target;
+	
+	bool traversal(int count, TreeNode* cur) {
+		if (!cur->left && !cur->right && count == 0) return true;
+		if (!cur->left && !cur->right) return false;			
+		if(cur->left) {
+			count -= cur->left->val;
+			if (traversal(count, cur->left)) return true;
+			count += cur->left->val;
+		}
+		if (cur->right) {
+			count -= cur->right->val;
+			if (traversal(count, cur->right)) return true;
+			count += cur->right->val;
+		}
+		return false;
+	}
+
+	bool hasPathSum(TreeNode* root, int targetSum) {
+		if (!root)	return false;
+		return traversal(targetSum - root->val, root);
+	}
+};
+```
+
+[113. 路径总和 II](https://leetcode-cn.com/problems/path-sum-ii/)
+```C++
+class Solution {
+public:
+	void traversal(TreeNode* cur,int count, vector<int> vec ,vector<vector<int>> &res) {
+		if (!cur->left && !cur->right && count == 0) {
+			res.push_back(vec);
+			return;
+		}
+		if (!cur->left && !cur->right) {
+			return;
+		}
+		
+		if (cur->left) {
+			count -= cur->left->val;
+			vec.push_back(cur->left->val);
+			traversal(cur->left, count, vec, res);
+			count += cur->left->val;
+			vec.pop_back();
+		}
+		
+		if (cur->right) {
+			count -= cur->right->val;
+			vec.push_back(cur->right->val);
+			traversal(cur->right, count, vec, res);
+			count += cur->right->val;
+			vec.pop_back();
+		}
+
+	}
+	
+	vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+		vector<vector<int>> res;
+		vector<int> vec;
+		if (!root) return res;
+		vec.push_back(root->val);
+		traversal(root, targetSum - root->val, vec, res);
+		return res;
+		
+	}
+};
+```
